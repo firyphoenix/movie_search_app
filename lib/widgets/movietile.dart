@@ -45,7 +45,7 @@ class MovieTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(height: 12,),
+                      SizedBox(height: 16,),
                       buildTitle(movieItem.title),
                       SizedBox(height:12),
                       buildGenreList(movieItem.genre),
