@@ -31,6 +31,7 @@ dependencies:
   flutter_rating_bar: ^3.0.1+1
   http: ^0.12.2
   provider: ^4.3.2
+  velocity_x: ^0.4.1
   shared_preferences: ^0.5.1+2
 
 dev_dependencies:

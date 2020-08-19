@@ -30,7 +30,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color:  Color.fromRGBO(242, 247, 245,1),
         padding: EdgeInsets.all(8),
+
         child : Column(
           children: <Widget>[
             SizedBox(height:24),
@@ -64,9 +66,9 @@ class _MyAppState extends State<MyApp> {
                         }
                         print(movies.length);
 
-                        return MovieTile(movieData : movies[index]);
+                        return MovieTile(movieItem : movies[index]);
                       },
-                      separatorBuilder: (context,_) => SizedBox(height: 10,),
+                      separatorBuilder: (context,_) => SizedBox(height: 54,),
                       itemCount: movies == null ? 0 : movies.length);
                 },
               ),//Data Consuming Here

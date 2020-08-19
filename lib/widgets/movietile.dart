@@ -2,120 +2,128 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_search_app/models/movieData.dart';
 
-
-
-var imgurl = "https://i1.wp.com/www.socialnews.xyz/wp-content/uploads/2019/04/06/Arjun-Reddy-Hindi-remake-Kabir-Singh-First-Look-Poster-.jpg?w=676&quality=90&zoom=1&ssl=1";
-var movieName = "Kabir Singh";
-var genre = ["Drama","Romance"];
-var rating = 7.2;
 var lightText = TextStyle(
-    color: Colors.blueGrey,fontWeight: FontWeight.w500,
-    fontSize: 14
-);
-
-
+    color: Colors.blueGrey, fontWeight: FontWeight.w500, fontSize: 14);
 
 class MovieTile extends StatelessWidget {
-  MovieData movieData;
-  MovieTile({this.movieData});
+  MovieData movieItem;
+  MovieTile({this.movieItem});
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
-
+      padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 1,
-                offset: Offset(1,1),
-                blurRadius: 6
-            )
-          ]
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3))
+        ],
       ),
-      padding: EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      height: 172,
+      child: Stack(
+        overflow: Overflow.visible,
+        fit: StackFit.expand,
         children: <Widget>[
-          Container(
-            height: 240,
+          Positioned(
+            top: -36,
             width: 140,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage("https://image.tmdb.org/t/p/w500" +
-                        movieData.imageurl,
-                    ),
-                    fit: BoxFit.fill
-                ),
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(8)
-            ),
+            bottom: 12,
+            child: buildPoster(movieItem.imageurl),
           ),
-          SizedBox(width: 28,),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height : 32),
-                movieData.title.length > 18 ? Text(movieData.title.substring(0,21),style:TextStyle(
-                    color: Colors.black,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold
-                ) ,) :
-                Text(movieData.title,style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold
-                ),),
-                SizedBox(height:12),
-                Row(
-                  children: <Widget>[
-                    Text("Genre : ",style: lightText,),
-                    Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: movieData.genre == null ? Text("Uncharted",style: lightText,): movieData.genre.map((e) => Text(e + " ",style: lightText,)).toList(),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+          Positioned(
+              left: 165,
+              bottom: 10,
+              top: 12,
+              right: 0,
+              child: Container(
 
-                SizedBox(height: 16,),
-                Row(
-                  children: <Widget>[
-                    Text(movieData.rating.toString(),style: TextStyle(color: Colors.blue,fontSize: 24,fontWeight: FontWeight.w500),),
-                    SizedBox(width: 12,),
-                    RatingBar(itemSize: 20,
-                      direction: Axis.horizontal,
-                      minRating: 1,
-                      unratedColor: Colors.blueGrey,
-                      itemCount: 5,
-                      initialRating:
-                      movieData.rating/2,
-                      allowHalfRating: true,
-                      onRatingUpdate: (value) {},
-                      itemBuilder: (context,_) => Icon(Icons.star,color: Colors.deepOrange,),
-                      itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                    )
-                  ],
-                )
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 12,),
+                      buildTitle(movieItem.title),
+                      SizedBox(height:12),
+                      buildGenreList(movieItem.genre),
+                      SizedBox(height: 16,),
+                      buildRating(movieItem.rating)
+                    ],
+                  )
 
-
-
-
-              ],
-            ),
-          )
+              )
+          ),
 
         ],
       ),
     );
   }
+
+  Widget buildRating(double rating) {
+    return  Row(
+      children: <Widget>[
+        Text(rating.toString(),style: TextStyle(color: Colors.blue,fontSize: 24,fontWeight: FontWeight.w500),),
+        SizedBox(width: 12,),
+        RatingBar(itemSize: 20,
+          direction: Axis.horizontal,
+          minRating: 1,
+          unratedColor: Colors.blueGrey,
+          itemCount: 5,
+          initialRating: movieItem.rating/2,
+          allowHalfRating: true,
+          onRatingUpdate: (value) {},
+          itemBuilder: (context,_) => Icon(Icons.star,color: Colors.deepOrange,),
+          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+        )
+      ],
+    );
+  }
+
+  Widget buildGenreList(List<String> genreData) {
+    return  Row(
+      children: <Widget>[
+        Text("Genre : ",style: lightText,),
+        Expanded(
+          flex: 1,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            //Genre of the Movie Goes Here
+            child: Row(
+              children: genreData == null ? Text("Uncharted",style: lightText,):genreData.map((e) => Text(e + " ",style: lightText,)).toList(),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+  Widget buildPoster(String url) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        image: DecorationImage(
+          image: NetworkImage(
+              "https://image.tmdb.org/t/p/w500" + url),
+        ),
+      ),
+    );
+  }
+
+  Widget buildTitle(String text) {
+    var actualText = text;
+//    if (text.length > 20) {
+//      actualText = text.substring(0, 26);
+//    }
+    return Text(
+      actualText,
+
+      overflow: TextOverflow.clip,
+
+      maxLines: 2,
+      style: TextStyle(
+          color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500),
+    );
+  }
 }
-
-
